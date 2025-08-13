@@ -1,5 +1,4 @@
-import type { Question } from "../../enterprise/entities/question.js";
-
+import type { Question } from '../../enterprise/entities/question.js'
 
 export interface QuestionsRepository {
   findById(id: string): Promise<Question | null>

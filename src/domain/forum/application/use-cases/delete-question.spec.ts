@@ -1,54 +1,54 @@
-import { InMemoryQuestionsRepository } from "test/repositories/in-memory-questions-repository.js";
-import { makeQuestion } from "test/factories/make-question.js";
-import { DeleteQuestionUseCase } from "./delete-question.js";
-import { UniqueEntityID } from "@/core/entities/unique-entity-id.js";
+import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository.js'
+import { makeQuestion } from 'test/factories/make-question.js'
+import { DeleteQuestionUseCase } from './delete-question.js'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id.js'
 
 // Repositório em memória para simular o banco de dados
-let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
-let sut: DeleteQuestionUseCase;
+let inMemoryQuestionsRepository: InMemoryQuestionsRepository
+let sut: DeleteQuestionUseCase
 
-describe("Delete Question", () => {
-  //Antes de cada teste instanciamos o repositório
+describe('Delete Question', () => {
+  // Antes de cada teste instanciamos o repositório
   beforeEach(() => {
-    inMemoryQuestionsRepository = new InMemoryQuestionsRepository();
-    sut = new DeleteQuestionUseCase(inMemoryQuestionsRepository);
-  });
+    inMemoryQuestionsRepository = new InMemoryQuestionsRepository()
+    sut = new DeleteQuestionUseCase(inMemoryQuestionsRepository)
+  })
 
   // system under test sut
 
-  it("should be able to delete a question", async () => {
+  it('should be able to delete a question', async () => {
     const newQuestion = makeQuestion(
       {
-        authorId: new UniqueEntityID("author-1"),
+        authorId: new UniqueEntityID('author-1'),
       },
-      new UniqueEntityID("question-1")
-    );
+      new UniqueEntityID('question-1'),
+    )
 
-    await inMemoryQuestionsRepository.create(newQuestion);
+    await inMemoryQuestionsRepository.create(newQuestion)
 
     await sut.execute({
       questionId: newQuestion.id.toString(),
       authorId: newQuestion.authorId.toString(),
-    });
+    })
 
-    expect(inMemoryQuestionsRepository.items).toHaveLength(0);
-  });
+    expect(inMemoryQuestionsRepository.items).toHaveLength(0)
+  })
 
-  it("should not be able to delete a question from another user.", async () => {
+  it('should not be able to delete a question from another user.', async () => {
     const newQuestion = makeQuestion(
       {
-        authorId: new UniqueEntityID("author-1"),
+        authorId: new UniqueEntityID('author-1'),
       },
-      new UniqueEntityID("question-1")
-    );
+      new UniqueEntityID('question-1'),
+    )
 
-    await inMemoryQuestionsRepository.create(newQuestion);
+    await inMemoryQuestionsRepository.create(newQuestion)
 
     await expect(
       sut.execute({
         questionId: newQuestion.id.toString(),
-        authorId: "<another-user-id>",
-      })
-    ).rejects.toBeInstanceOf(Error);
-  });
-});
+        authorId: '<another-user-id>',
+      }),
+    ).rejects.toBeInstanceOf(Error)
+  })
+})

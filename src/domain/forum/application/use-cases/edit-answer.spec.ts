@@ -1,23 +1,22 @@
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository.js'
-
-import { DeleteAnswerUseCase } from './delete-answer.js'
-import { UniqueEntityID } from '@/core/entities/unique-entity-id.js'
 import { makeAnswer } from 'test/factories/make-answer.js'
+import { EditAnswerUseCase } from './edit-answer.js'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id.js'
 
 // Repositório em memória para simular o banco de dados
 let inMemoryAnswersRepository: InMemoryAnswersRepository
-let sut: DeleteAnswerUseCase
+let sut: EditAnswerUseCase
 
-describe('Delete Answer', () => {
+describe('Edit Answer', () => {
   // Antes de cada teste instanciamos o repositório
   beforeEach(() => {
     inMemoryAnswersRepository = new InMemoryAnswersRepository()
-    sut = new DeleteAnswerUseCase(inMemoryAnswersRepository)
+    sut = new EditAnswerUseCase(inMemoryAnswersRepository)
   })
 
   // system under test sut
 
-  it('should be able to delete a answer', async () => {
+  it('should be able to edit a answer', async () => {
     const newAnswer = makeAnswer(
       {
         authorId: new UniqueEntityID('author-1'),
@@ -30,12 +29,16 @@ describe('Delete Answer', () => {
     await sut.execute({
       answerId: newAnswer.id.toString(),
       authorId: newAnswer.authorId.toString(),
+      content: 'Updated content',
     })
 
-    expect(inMemoryAnswersRepository.items).toHaveLength(0)
+    expect(inMemoryAnswersRepository.items[0]?.id).toBeTruthy()
+    expect(inMemoryAnswersRepository.items[0]).toMatchObject({
+      content: 'Updated content',
+    })
   })
 
-  it('should not be able to delete a answer from another user.', async () => {
+  it('should not be able to edit a answer from another user.', async () => {
     const newAnswer = makeAnswer(
       {
         authorId: new UniqueEntityID('author-1'),
@@ -49,6 +52,7 @@ describe('Delete Answer', () => {
       sut.execute({
         answerId: newAnswer.id.toString(),
         authorId: '<another-user-id>',
+        content: 'Updated content',
       }),
     ).rejects.toBeInstanceOf(Error)
   })

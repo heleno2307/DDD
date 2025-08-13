@@ -9,6 +9,13 @@ export class InMemoryAnswersRepository implements AnswersRepository {
         return answer ? answer : null;
     }
 
+    async save(answer: Answer) {
+        const index = this.items.findIndex(item => item.id.toString() === answer.id.toString());
+        if (index !== -1) {
+            this.items[index] = answer;
+        }
+    }
+
     async create(answer: Answer) {
         this.items.push(answer);
     }

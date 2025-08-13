@@ -20,8 +20,5 @@ export default [
       'no-useless-constructor': 'off',
     },
     ignores: ['node_modules', 'dist', 'eslint.config.js'],
-    env: {
-      'vitest-globals/env': true,
-    },
   },
 ]

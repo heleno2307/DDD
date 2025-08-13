@@ -1,17 +1,19 @@
 import type { AnswersRepository } from '../repositories/answers-repository.js'
 
-interface DeleteAnswerUseCaseRequest {
-  answerId: string
+interface EditAnswerUseCaseRequest {
   authorId: string
+  answerId: string
+  content: string
 }
 
-export class DeleteAnswerUseCase {
+export class EditAnswerUseCase {
   constructor(private answersRepository: AnswersRepository) {}
 
   async execute({
     answerId,
     authorId,
-  }: DeleteAnswerUseCaseRequest): Promise<void> {
+    content,
+  }: EditAnswerUseCaseRequest): Promise<void> {
     const answer = await this.answersRepository.findById(answerId)
 
     if (!answer) {
@@ -22,6 +24,8 @@ export class DeleteAnswerUseCase {
       throw new Error('Unauthorized')
     }
 
-    await this.answersRepository.delete(answer)
+    answer.content = content
+
+    await this.answersRepository.save(answer)
   }
 }

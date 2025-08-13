@@ -1,4 +1,4 @@
-import type { QuestionsRepository } from "../repositories/questions-repository.js";
+import type { QuestionsRepository } from '../repositories/questions-repository.js'
 
 interface EditQuestionUseCaseRequest {
   authorId: string
@@ -7,8 +7,6 @@ interface EditQuestionUseCaseRequest {
   content: string
 }
 
-interface EditQuestionUseCaseResponse {}
-
 export class EditQuestionUseCase {
   constructor(private questionsRepository: QuestionsRepository) {}
 
@@ -16,23 +14,21 @@ export class EditQuestionUseCase {
     questionId,
     authorId,
     title,
-    content
-  }: EditQuestionUseCaseRequest): Promise<EditQuestionUseCaseResponse> {
-    const question = await this.questionsRepository.findById(questionId);
+    content,
+  }: EditQuestionUseCaseRequest): Promise<void> {
+    const question = await this.questionsRepository.findById(questionId)
 
     if (!question) {
-      throw new Error("Question not found");
+      throw new Error('Question not found')
     }
 
     if (question.authorId.toString() !== authorId) {
-      throw new Error("Unauthorized");
+      throw new Error('Unauthorized')
     }
 
-    question.title = title;
-    question.content = content;
+    question.title = title
+    question.content = content
 
-    await this.questionsRepository.save(question);
-
-    return {};
+    await this.questionsRepository.save(question)
   }
 }
