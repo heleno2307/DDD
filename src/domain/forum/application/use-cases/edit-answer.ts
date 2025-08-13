@@ -1,9 +1,14 @@
+import type { Answer } from '../../enterprise/entities/answer.js'
 import type { AnswersRepository } from '../repositories/answers-repository.js'
 
 interface EditAnswerUseCaseRequest {
   authorId: string
   answerId: string
   content: string
+}
+
+interface EditAnswerUseCaseResponse {
+  answer: Answer
 }
 
 export class EditAnswerUseCase {
@@ -13,7 +18,7 @@ export class EditAnswerUseCase {
     answerId,
     authorId,
     content,
-  }: EditAnswerUseCaseRequest): Promise<void> {
+  }: EditAnswerUseCaseRequest): Promise<EditAnswerUseCaseResponse> {
     const answer = await this.answersRepository.findById(answerId)
 
     if (!answer) {
@@ -27,5 +32,9 @@ export class EditAnswerUseCase {
     answer.content = content
 
     await this.answersRepository.save(answer)
+
+    return {
+      answer,
+    }
   }
 }
