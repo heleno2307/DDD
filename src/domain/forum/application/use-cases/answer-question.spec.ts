@@ -26,7 +26,7 @@ describe ('Create Answer',()=>{
       instructorId: '1',
     })
 
-    expect(answer.authorId).toBeTruthy()
-   
+    expect(answer.id).toBeTruthy()
+    expect(inMemoryAnswersRepository.items[0]?.id).toEqual(answer.id)
   })
 })

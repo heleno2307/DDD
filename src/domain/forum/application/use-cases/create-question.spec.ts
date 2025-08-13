@@ -24,7 +24,6 @@ describe ('Create Question',()=>{
     })
 
     expect(question.authorId).toBeTruthy()
-    expect(question.content).toBe('Nova pergunta')
-    expect(question.title).toBe('Título da pergunta')
+    expect(inMemoryQuestionsRepository.items[0]?.id).toEqual(question.id)
   })
 })
