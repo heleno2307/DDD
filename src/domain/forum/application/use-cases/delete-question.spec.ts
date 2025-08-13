@@ -44,11 +44,11 @@ describe("Delete Question", () => {
 
     await inMemoryQuestionsRepository.create(newQuestion);
 
-    expect(() => {
-      return sut.execute({
+    await expect(
+      sut.execute({
         questionId: newQuestion.id.toString(),
         authorId: "<another-user-id>",
-      });
-    }).rejects.toBeInstanceOf(Error);
+      })
+    ).rejects.toBeInstanceOf(Error);
   });
 });
