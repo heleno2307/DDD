@@ -2,6 +2,7 @@ import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-r
 import { makeAnswer } from 'test/factories/make-answer.js'
 import { EditAnswerUseCase } from './edit-answer.js'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id.js'
+import { NotAllowedError } from './errors/not-allowed-error.js'
 
 // Repositório em memória para simular o banco de dados
 let inMemoryAnswersRepository: InMemoryAnswersRepository
@@ -48,12 +49,13 @@ describe('Edit Answer', () => {
 
     await inMemoryAnswersRepository.create(newAnswer)
 
-    await expect(
-      sut.execute({
-        answerId: newAnswer.id.toString(),
-        authorId: '<another-user-id>',
-        content: 'Updated content',
-      }),
-    ).rejects.toBeInstanceOf(Error)
+    const result = await sut.execute({
+      answerId: newAnswer.id.toString(),
+      authorId: '<another-user-id>',
+      content: 'Updated content',
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(NotAllowedError)
   })
 })

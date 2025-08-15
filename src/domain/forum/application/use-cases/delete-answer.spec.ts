@@ -3,6 +3,7 @@ import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-r
 import { DeleteAnswerUseCase } from './delete-answer.js'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id.js'
 import { makeAnswer } from 'test/factories/make-answer.js'
+import { NotAllowedError } from './errors/not-allowed-error.js'
 
 // Repositório em memória para simular o banco de dados
 let inMemoryAnswersRepository: InMemoryAnswersRepository
@@ -45,11 +46,12 @@ describe('Delete Answer', () => {
 
     await inMemoryAnswersRepository.create(newAnswer)
 
-    await expect(
-      sut.execute({
-        answerId: newAnswer.id.toString(),
-        authorId: '<another-user-id>',
-      }),
-    ).rejects.toBeInstanceOf(Error)
+    const result = await sut.execute({
+      answerId: newAnswer.id.toString(),
+      authorId: '<another-user-id>',
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(NotAllowedError)
   })
 })

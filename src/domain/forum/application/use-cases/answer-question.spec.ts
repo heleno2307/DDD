@@ -22,10 +22,6 @@ describe('Create Answer', () => {
     })
 
     expect(result.isRight()).toBe(true)
-
-    const { answer } = result.value
-
-    expect(answer.id).toBeTruthy()
-    expect(inMemoryAnswersRepository.items[0]?.id).toEqual(answer.id)
+    expect(inMemoryAnswersRepository.items[0]).toEqual(result.value?.answer)
   })
 })
