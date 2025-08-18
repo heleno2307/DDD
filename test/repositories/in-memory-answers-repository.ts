@@ -1,8 +1,13 @@
 import type { PaginationParams } from '@/core/repositories/pagination-params.js'
+import type { AnswerAttachmentsRepository } from '@/domain/forum/application/repositories/answer-attachment-repository.js'
 import type { AnswersRepository } from '@/domain/forum/application/repositories/answers-repository.js'
 import type { Answer } from '@/domain/forum/enterprise/entities/answer.js'
 
 export class InMemoryAnswersRepository implements AnswersRepository {
+  constructor(
+    private answerAttachmentsRepository: AnswerAttachmentsRepository,
+  ) {}
+
   public items: Answer[] = []
 
   async findById(id: string) {
@@ -33,6 +38,10 @@ export class InMemoryAnswersRepository implements AnswersRepository {
   async delete(answer: Answer) {
     this.items = this.items.filter(
       (item) => item.id.toString() !== answer.id.toString(),
+    )
+
+    await this.answerAttachmentsRepository.deleteManyByAnswerId(
+      answer.id.toString(),
     )
   }
 }

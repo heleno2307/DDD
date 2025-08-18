@@ -5,10 +5,12 @@ import { makeQuestion } from 'test/factories/make-question.js'
 import { makeAnswer } from 'test/factories/make-answer.js'
 import { NotAllowedError } from './errors/not-allowed-error.js'
 import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments.js'
+import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachment.js'
 
 // Repositório em memória para simular o banco de dados
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
+let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let inMemoryAnswersRepository: InMemoryAnswersRepository
 let sut: ChoseQuestionBestAnsweUseCase
 
@@ -18,11 +20,16 @@ describe('Choose Question Best Answer', () => {
     inMemoryQuestionAttachmentsRepository =
       new InMemoryQuestionAttachmentsRepository()
 
+    inMemoryAnswerAttachmentsRepository =
+      new InMemoryAnswerAttachmentsRepository()
+
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
       inMemoryQuestionAttachmentsRepository,
     )
 
-    inMemoryAnswersRepository = new InMemoryAnswersRepository()
+    inMemoryAnswersRepository = new InMemoryAnswersRepository(
+      inMemoryAnswerAttachmentsRepository,
+    )
 
     sut = new ChoseQuestionBestAnsweUseCase(
       inMemoryQuestionsRepository,

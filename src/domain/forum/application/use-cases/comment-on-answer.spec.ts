@@ -2,16 +2,23 @@ import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-r
 import { CommentOnAnswerUseCase } from './comment-on-answer.js'
 import { InMemoryAnswerCommentsRepository } from 'test/repositories/in-memory-answer-comments.js'
 import { makeAnswer } from 'test/factories/make-answer.js'
+import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachment.js'
 
 // Repositório em memória para simular o banco de dados
 let inMemoryAnswersRepository: InMemoryAnswersRepository
 let inMemoryAnswerCommentsRepository: InMemoryAnswerCommentsRepository
+let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let sut: CommentOnAnswerUseCase
 
 describe('Create Answer Comments', () => {
   // Antes de cada teste instanciamos o repositório
   beforeEach(() => {
-    inMemoryAnswersRepository = new InMemoryAnswersRepository()
+    inMemoryAnswerAttachmentsRepository =
+      new InMemoryAnswerAttachmentsRepository()
+
+    inMemoryAnswersRepository = new InMemoryAnswersRepository(
+      inMemoryAnswerAttachmentsRepository,
+    )
     inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository()
 
     sut = new CommentOnAnswerUseCase(

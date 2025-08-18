@@ -2,16 +2,23 @@ import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questio
 import { CommentOnQuestionUseCase } from './comment-on-question.js'
 import { InMemoryQuestionCommentsRepository } from 'test/repositories/in-memory-question-comments.js'
 import { makeQuestion } from 'test/factories/make-question.js'
+import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments.js'
 
 // Repositório em memória para simular o banco de dados
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
 let inMemoryQuestionCommentsRepository: InMemoryQuestionCommentsRepository
+let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
 let sut: CommentOnQuestionUseCase
 
 describe('Create Question Comments', () => {
   // Antes de cada teste instanciamos o repositório
   beforeEach(() => {
-    inMemoryQuestionsRepository = new InMemoryQuestionsRepository()
+    inMemoryQuestionAttachmentsRepository =
+      new InMemoryQuestionAttachmentsRepository()
+
+    inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
+      inMemoryQuestionAttachmentsRepository,
+    )
     inMemoryQuestionCommentsRepository =
       new InMemoryQuestionCommentsRepository()
 
