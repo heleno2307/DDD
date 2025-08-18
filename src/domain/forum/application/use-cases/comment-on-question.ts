@@ -2,7 +2,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id.js'
 import { QuestionComment } from '../../enterprise/entities/question-comment.js'
 import type { QuestionCommentsRepository } from '../repositories/question-comments-repository.js'
 import type { QuestionsRepository } from '../repositories/questions-repository.js'
-import { ResourceNotFoundError } from './errors/resource-not-found-error.js'
+import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error.js'
 import { left, right, type Either } from '@/core/either.js'
 
 interface CommentOnQuestionUseCaseRequest {

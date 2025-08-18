@@ -3,7 +3,7 @@ import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-r
 import { ChoseQuestionBestAnsweUseCase } from './chose-question-best-answer.js'
 import { makeQuestion } from 'test/factories/make-question.js'
 import { makeAnswer } from 'test/factories/make-answer.js'
-import { NotAllowedError } from './errors/not-allowed-error.js'
+import { NotAllowedError } from '@/core/errors/not-allowed-error.js'
 import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments.js'
 import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachment.js'
 

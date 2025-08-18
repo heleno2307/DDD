@@ -1,7 +1,7 @@
 import { left, right, type Either } from '@/core/either.js'
 import type { AnswerCommentsRepository } from '../repositories/answer-comments-repository.js'
-import { ResourceNotFoundError } from './errors/resource-not-found-error.js'
-import { NotAllowedError } from './errors/not-allowed-error.js'
+import { ResourceNotFoundError } from '@/core/errors/resource-not-found-error.js'
+import { NotAllowedError } from '@/core/errors/not-allowed-error.js'
 
 interface DeleteAnswerCommentUseCaseRequest {
   answerCommentId: string
