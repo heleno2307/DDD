@@ -1,8 +1,8 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id.js'
 
 import {
-    QuestionAttachment,
-    QuestionAttachmentProps,
+  QuestionAttachment,
+  QuestionAttachmentProps,
 } from '@/domain/forum/enterprise/entities/question-attachment.js'
 
 export function makeQuestionAttachment(

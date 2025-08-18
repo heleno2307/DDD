@@ -1,15 +1,22 @@
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository.js'
 import { CreateQuestionUseCase } from './create-question.js'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id.js'
+import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments.js'
 
 // Repositório em memória para simular o banco de dados
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
+let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
 let sut: CreateQuestionUseCase
 
 describe('Create Question', () => {
   // Antes de cada teste instanciamos o repositório
   beforeEach(() => {
-    inMemoryQuestionsRepository = new InMemoryQuestionsRepository()
+    inMemoryQuestionAttachmentsRepository =
+      new InMemoryQuestionAttachmentsRepository()
+
+    inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
+      inMemoryQuestionAttachmentsRepository,
+    )
     sut = new CreateQuestionUseCase(inMemoryQuestionsRepository)
   })
 

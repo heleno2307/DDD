@@ -4,16 +4,24 @@ import { ChoseQuestionBestAnsweUseCase } from './chose-question-best-answer.js'
 import { makeQuestion } from 'test/factories/make-question.js'
 import { makeAnswer } from 'test/factories/make-answer.js'
 import { NotAllowedError } from './errors/not-allowed-error.js'
+import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments.js'
 
 // Repositório em memória para simular o banco de dados
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
+let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
 let inMemoryAnswersRepository: InMemoryAnswersRepository
 let sut: ChoseQuestionBestAnsweUseCase
 
 describe('Choose Question Best Answer', () => {
   // Antes de cada teste instanciamos o repositório
   beforeEach(() => {
-    inMemoryQuestionsRepository = new InMemoryQuestionsRepository()
+    inMemoryQuestionAttachmentsRepository =
+      new InMemoryQuestionAttachmentsRepository()
+
+    inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
+      inMemoryQuestionAttachmentsRepository,
+    )
+
     inMemoryAnswersRepository = new InMemoryAnswersRepository()
 
     sut = new ChoseQuestionBestAnsweUseCase(
