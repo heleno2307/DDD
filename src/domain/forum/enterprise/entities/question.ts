@@ -4,6 +4,7 @@ import type { UniqueEntityID } from '@/core/entities/unique-entity-id.js'
 import type { Optional } from '@/core/types/optional.js'
 import dayjs from 'dayjs'
 import { QuestionAttachmentList } from './question-attachment-list.js'
+import { QuestionBestAnswerChosenEvent } from '../events/question-best-answer-chosen-event.js'
 
 export interface QuestionProps {
   authorId: UniqueEntityID
@@ -73,6 +74,10 @@ export class Question extends AggregateRoot<QuestionProps> {
   }
 
   set bestAnswerId(bestAnswerId: UniqueEntityID | undefined) {
+    if (bestAnswerId && bestAnswerId !== this.props.bestAnswerId) {
+      this.addDomainEvent(new QuestionBestAnswerChosenEvent(this, bestAnswerId))
+    }
+
     if (bestAnswerId === undefined) {
       // Se o valor for undefined, remova a propriedade do objeto.
       delete this.props.bestAnswerId
